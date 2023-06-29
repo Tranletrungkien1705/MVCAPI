@@ -1,0 +1,66 @@
+﻿<input type="text" id="keyword" placeholder="Please enter" />
+<table class="table table-active">
+    <tr>
+        <th>Nbr</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Cat_id</th>
+    </tr>
+    <tbody id="data">
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "https://localhost:7206/Product/get"
+            , dataType: "json"
+            , type: "GET"
+            , data: ""
+            , crossDomain: true
+            , success: function (data) {
+                if (data) {
+                    let r = '';
+                    $.each(data, function (i, cat) {
+                        r += "<tr>";
+                        r += "<td>" + cat.id + "</td>";
+                        r += "<td>" + cat.name + "</td>";
+                        r += "<td>" + cat.price + "</td>";
+                        r += "<td>" + cat.quantity + "</td>";
+                        r += "<td>" + cat.cat_id + "</td>";
+                        r += "</tr>";
+                    });
+                    $("#data").html(r);
+                }
+            }
+        });
+        $("#keyword").keypress(function () {
+            let keyword = $(this).val();
+            if (keyword.length >= 3) {
+                $.ajax({
+                    url: "https://localhost:7206/Product/SearchByName/" + keyword
+                    , type: "GET"
+                    , dataType: "JSON"
+                    , beforeSend: function () {
+                        $("#data").html("<img src='https://localhost:7017/images/API_load.mp4' width='50px'/>")
+                    }
+                    , success: function (msg) {
+                        if (msg) {
+                            let r = "";
+                            $.each(msg, function (i, cat) {
+                                r += "<tr>";
+                                r += "<td>" + cat.id + "</td>";
+                                r += "<td>" + cat.name + "</td>";
+                                r += "<td>" + cat.price + "</td>";
+                                r += "<td>" + cat.quantity + "</td>";
+                                r += "<td>" + cat.cat_id + "</td>";
+                                r += "</tr>";
+                            });
+                            setTimeout($("#data").html(r), 30000);
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,60 @@
+﻿<input name="CatId" id="CatId" type="text" placeholder="Please enter" />
+<input name="CatName" id="CatName" type="text" placeholder="Please enter" />
+<span id="mes_cat_name"></span>
+<input type="button" value="Add New Category" />
+<button>Submit</button>`
+@*<table class="table table-active">
+    <tr>
+        <th>Nbr</th>
+        <th>Name</th>
+    </tr>
+    <tbody id="data">
+    </tbody>
+</table>*@
+<script>
+    $(document).ready(function () {
+        //$.ajax({
+        //    url: "https://localhost:7206/Category/get"
+        //    , dataType: "json"
+        //    , type: "GET"
+        //    , data: ""
+        //    , crossDomain: true
+        //    , success: function (data) {
+        //        if (data) {
+        //            let r = '';
+        //            $.each(data, function (i, cat) {
+        //                r += "<tr>";
+        //                r += "<td>" + cat.id + "</td>";
+        //                r += "<td>" + cat.name + "</td>";
+        //                r += "</tr>";
+        //            });
+        //            $("#data").html(r);
+        //        }
+        //    }
+        //});
+        $("input[type='button']").click(function () {
+            let CatName = $("input[name='CatName']").val();
+            let CatId = $("input[name='CatId']").val();
+            if (CatName.length == 0) {
+                $("#mes_cat_name")
+                    .text("Please enter Category Name")
+                    .css("color", "red")
+            } else {
+                let NewCat = new Object();
+                NewCat.Id = CatId;
+                NewCat.Name = CatName;
+                $.ajax({
+                    url: "https://localhost:7206/Category/UpdateById/" + CatId
+                    , type: "POST"
+                    , dataType: "JSON"
+                    , data: JSON.stringify(NewCat)
+                    , contentType: "application/json"
+                    , async: false
+                    , success: function (msg) {
+                        window.location.replace("https://localhost:7017/Category");
+                    }
+                });
+            }
+        });
+    });
+</script>

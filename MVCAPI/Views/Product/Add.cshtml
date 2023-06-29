@@ -1,0 +1,68 @@
+﻿@*<input name="CatName" id="CatName" type="text" placeholder="Please enter" />*@
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input type="text" id="Name" name="Name" class="form-control" />
+                <span  class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Price" class="control-label">Price</label>
+                <input type="text" id="Price" name="Price" class="form-control" />
+                <span class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Quantity" class="control-label">Quantity</label>
+                <input type="text" id="Quantity" name="Quantity" class="form-control" />
+                <span  class="text-danger"></span>
+            </div>
+            <div class="form-group">
+            <label for="Cat_id" class="control-label">Cat_id</label>
+            <input type="text" id="Cat_id" name="Cat_id" class="form-control" />
+                @*<select name="CatID" asp-items="ViewBag.DepId" class="form-select"></select>*@
+                <span  class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<span id="mes_cat_name"></span>
+<input type="button" value="Add New Category" />
+<script>
+    $(document).ready(function () {
+        $("input[type='button']").click(function () {
+            let Name = $("input[name='Name']").val();
+            let Price = $("input[name='Price']").val();
+            let Quantity = $("input[name='Quantity']").val();
+            let Cat_id = $("input[name='Cat_id']").val();
+            if (Name.length == 0) {
+                $("#mes_cat_name")
+                    .text("Please enter Category Name")
+                    .css("color", "red")
+            } else {
+                let NewCat = new Object();
+                NewCat.Name = Name;
+                NewCat.Price = parseFloat(Price);
+                NewCat.Quantity = parseInt(Quantity);
+                NewCat.Cat_id = parseInt(Cat_id);
+                //alert(parseInt(CatID));
+                $.ajax({
+                    url: "https://localhost:7206/Product/CreatNew"
+                    , type: "POST"
+                    , dataType: "JSON"
+                    , data: JSON.stringify(NewCat)
+                    , contentType: "application/json"
+                    , async: false
+                    , success: function (msg) {
+                        window.location.replace("https://localhost:7017/Product");
+                    }
+                });
+            }
+        });
+    });
+</script>
